@@ -1,0 +1,14 @@
+sentiment_analysis_venv/
+
+*.pyc
+__pycache__/
+*.log
+
+*.pot
+*.py[cod]
+*.sqlite3
+db.sqlite3
+staticfiles/
+media/
+
+.DS_Store
