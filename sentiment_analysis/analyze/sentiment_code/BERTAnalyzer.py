@@ -1,13 +1,11 @@
 from transformers import BertTokenizer, BertForSequenceClassification
-import joblib
 import torch
 from .SentimentResult import SentimentResult
 
 class BERTAnalyzer:
     def __init__(self):
-        self.tokenizer = BertTokenizer.from_pretrained('../ML models/BERT/')
-        self.label_encoder = joblib.load('../ML models/BERT/label_encoder.pkl')
-        self.model = BertForSequenceClassification.from_pretrained('../ML models/BERT/')
+        self.tokenizer = BertTokenizer.from_pretrained('../models/BERT/')
+        self.model = BertForSequenceClassification.from_pretrained('../models/BERT/')
         self.current_text = None 
         self.current_result = None 
 
@@ -19,7 +17,13 @@ class BERTAnalyzer:
         with torch.no_grad():
             output = self.model(**input)
         prediction = torch.argmax(output.logits, dim=1)
-        decoded_prediction = self.label_encoder.inverse_transform(prediction)[0]
 
-        self.current_result = SentimentResult(decoded_prediction, prediction)
+        if prediction == 0:
+            prediction_label = "negative"
+        elif prediction == 2:
+            prediction_label = "positive"
+        else:
+            prediction_label = "neutral"
+
+        self.current_result = SentimentResult(prediction_label, prediction)
         return self.current_result

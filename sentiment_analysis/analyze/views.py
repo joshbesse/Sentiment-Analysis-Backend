@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response 
-from .models import Analysis
+from .models import Analyze
 from .sentiment_code.SentimentAnalysisFacade import SentimentAnalysisFacade
 from .serializers import AnalysisSerializer
 
@@ -16,7 +16,7 @@ def analyze_text(request):
     facade.select_analyzer(analyzer_type)
     result = facade.analyze_text(text)
 
-    analysis_result = Analysis.objects.create(
+    analysis_result = Analyze.objects.create(
         analyzer=analyzer_type,
         text=text, 
         sentiment=result.get_sentiment(), 
@@ -30,6 +30,6 @@ def analyze_text(request):
 
 @api_view(["GET"])
 def get_analysis_history(request):
-    history = Analysis.objects.all().order_by("-created_at")[:10]
+    history = Analyze.objects.all().order_by("-date")[:10]
     serializer = AnalysisSerializer(history, many=True)
     return Response(serializer.data)
