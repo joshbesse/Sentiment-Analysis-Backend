@@ -1,5 +1,4 @@
 sentiment_analysis_venv/
-models/
 
 *.pyc
 __pycache__/
