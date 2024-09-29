@@ -1,4 +1,5 @@
-backend/sentiment_analysis_venv/
+sentiment_analysis_venv/
+
 *.pyc
 __pycache__/
 *.log
