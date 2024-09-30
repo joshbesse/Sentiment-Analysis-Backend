@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class RandomForestAnalyzer:
     def __init__(self):
         model_dir = os.path.join('models', 'Random Forest')
-        vectorizer_path = os.path.join(model_dir, 'tfidf_vectorizer.pkl')
+        vectorizer_path = os.path.join(model_dir, 'rand_for_tfidf_vectorizer.pkl')
         model_path = os.path.join(model_dir, 'rand_for_model.pkl')
 
         if not os.path.exists(model_dir):
@@ -17,12 +17,12 @@ class RandomForestAnalyzer:
 
         if not os.path.exists(vectorizer_path):
             logger.info("Vectorizer file not found locally. Downloading from S3...")
-            s3_key = 'Random Forest/tfidf_vectorizer.pkl'
+            s3_key = 'rand_for_tfidf_vectorizer.pkl'
             download_file_from_s3(s3_key, vectorizer_path)
         
         if not os.path.exists(model_path):
             logger.info("Model file not found locally. Downloading from S3...")
-            s3_key = 'Random Forest/rand_for_model.pkl'
+            s3_key = 'rand_for_model.pkl'
             download_file_from_s3(s3_key, model_path)
 
         self.vectorizer = joblib.load(vectorizer_path)

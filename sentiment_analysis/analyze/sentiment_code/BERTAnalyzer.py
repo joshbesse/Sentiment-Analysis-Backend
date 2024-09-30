@@ -25,7 +25,7 @@ class BERTAnalyzer:
             local_file_path = os.path.join(model_dir, file)
             if not os.path.exists(local_file_path):
                 logger.info(f"{file} not found locally. Downloading from S3...")
-                s3_key = f'BERT/{file}'
+                s3_key = file
                 download_file_from_s3(s3_key, local_file_path)
         
         self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
@@ -48,5 +48,5 @@ class BERTAnalyzer:
         else:
             prediction_label = "neutral"
 
-        self.current_result = SentimentResult(prediction_label, float(logits.max()))
+        self.current_result = SentimentResult(prediction_label, prediction)
         return self.current_result
