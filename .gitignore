@@ -3,6 +3,7 @@ models/
 .env
 *.pkl
 *.pt
+.python-version
 
 *.pyc
 __pycache__/
