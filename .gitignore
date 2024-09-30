@@ -1,6 +1,8 @@
 sentiment_analysis_venv/
 models/
 .env
+*.pkl
+*.pt
 
 *.pyc
 __pycache__/
