@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import os 
 from .SentimentResult import SentimentResult
-from ...sentiment_analysis.utils import download_file_from_s3
+from sentiment_analysis.utils import download_file_from_s3
 import logging 
 
 logger = logging.getLogger(__name__)
