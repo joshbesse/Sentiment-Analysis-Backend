@@ -149,7 +149,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://66fae96a652d8b3b6698d480--sentiment-analysis-application.netlify.app",
+]
 
+CORS_ALLOW_CREDENTIALS = True 
 
 django_heroku.settings(locals())
