@@ -1,4 +1,4 @@
-sentiment_analysis_venv/
+venv-size-check/
 models/
 .env
 *.pkl
