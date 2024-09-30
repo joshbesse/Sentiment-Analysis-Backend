@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sentiment_analysis.analyze',
+    'analyze',
     'rest_framework',
     'corsheaders',
 ]
