@@ -21,5 +21,6 @@ class SentimentAnalysisFacade:
             logger.error("No analyzer selected.")
             return None 
         result = self.sentiment_analyzer.analyze_sentiment(text)
-        logger.info(f"Analyzed text: {text} | Sentiment: {result.get_sentiment()} | Score: {result.get_score()}")
+        if result:
+            logger.info(f"Analyzed text: {text} | Sentiment: {result.get_sentiment()} | Score: {result.get_score()}")
         return result

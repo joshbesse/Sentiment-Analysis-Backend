@@ -26,6 +26,9 @@ class ModelRegistry:
         if analyzer:
             cls._models[analyzer_type] = analyzer
             logger.info(f"Loaded and cached model for analyzer type: {analyzer_type}")
+        else:
+            logger.error(f"Failed to create analyzer for type: {analyzer_type}")
+            
         return analyzer
 
     @staticmethod
