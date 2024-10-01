@@ -1,6 +1,5 @@
-from .AnalyzerMaker import AnalyzerMaker
 from .LogisticRegressionAnalyzer import LogisticRegressionAnalyzer
 
-class LogisticRegressionAnalyzerMaker(AnalyzerMaker):
+class LogisticRegressionAnalyzerMaker:
     def make_analyzer(self):
         return LogisticRegressionAnalyzer()

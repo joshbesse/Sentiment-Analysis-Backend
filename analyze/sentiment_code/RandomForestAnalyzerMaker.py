@@ -1,6 +1,5 @@
-from .AnalyzerMaker import AnalyzerMaker
 from .RandomForestAnalyzer import RandomForestAnalyzer
 
-class RandomForestAnalyzerMaker(AnalyzerMaker):
+class RandomForestAnalyzerMaker:
     def make_analyzer(self):
         return RandomForestAnalyzer()
