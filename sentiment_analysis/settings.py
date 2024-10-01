@@ -37,7 +37,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-2qansb87%o%wjv
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'sentiment-analysis-backend.herokuapp.com',
+    'sentiment-analysis-backend-2dfc823f1e16.herokuapp.com',
     '66faee0a50fb4d0090e871b0--sentiment-analysis-application.netlify.app',
     'sentiment-analysis-application.netlify.app',
     '127.0.0.1',
