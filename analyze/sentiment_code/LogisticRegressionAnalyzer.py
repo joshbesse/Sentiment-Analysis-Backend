@@ -8,6 +8,11 @@ logger = logging.getLogger(__name__)
 
 class LogisticRegressionAnalyzer:
     def __init__(self):
+        self.vectorizer = None 
+        self.model = None 
+        self.load_models()
+
+    def load_models(self):
         model_dir = os.path.join('models', 'Logistic Regression')
         vectorizer_path = os.path.join(model_dir, 'log_reg_tfidf_vectorizer.pkl')
         model_path = os.path.join(model_dir, 'log_reg_model.pkl')
@@ -27,14 +32,11 @@ class LogisticRegressionAnalyzer:
 
         self.vectorizer = joblib.load(vectorizer_path)
         self.model = joblib.load(model_path)
-        self.current_text = None 
-        self.current_result = None 
+        logger.info("Logistic Regression models loaded successfully.")
 
-    def analyze_sentiment(self, text):
-        self.current_text = text
-
+    def analyze_text(self, text):
         text_vectorization = self.vectorizer.transform([text])
-        prediction = self.model.predict(text_vectorization)
+        prediction = self.model.predict(text_vectorization)[0]
 
         if prediction == -1:
             prediction_label = "negative"
@@ -43,6 +45,4 @@ class LogisticRegressionAnalyzer:
         else:
             prediction_label = "neutral"
 
-        self.current_result = SentimentResult(prediction_label, prediction)
-        return self.current_result
-
+        return SentimentResult(prediction_label, prediction)
