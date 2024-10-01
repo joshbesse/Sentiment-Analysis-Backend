@@ -77,8 +77,7 @@ class AdvancedAnalyzer:
         else:
             sentiment = "neutral"
 
-        self.current_result = SentimentResult(sentiment, score)
-        return self.current_result
+        return SentimentResult(sentiment, score)
     
     def save_state(self):
         return SentimentMemento(self.current_text, self.current_result)

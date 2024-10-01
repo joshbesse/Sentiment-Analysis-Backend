@@ -1,5 +1,3 @@
-import os 
-import joblib
 import logging
 from .BasicAnalyzerMaker import BasicAnalyzerMaker
 from .AdvancedAnalyzerMaker import AdvancedAnalyzerMaker
@@ -16,6 +14,7 @@ class ModelRegistry:
     @classmethod
     def get_model(cls, analyzer_type):
         if analyzer_type in cls._models:
+            logger.info(f"Using cached model for analyzer type: {analyzer_type}")
             return cls._models[analyzer_type]
 
         maker = cls._get_maker(analyzer_type)
@@ -24,8 +23,9 @@ class ModelRegistry:
             return None
 
         analyzer = maker.make_analyzer()
-        cls._models[analyzer_type] = analyzer
-        logger.info(f"Loaded and cached model for analyzer type: {analyzer_type}")
+        if analyzer:
+            cls._models[analyzer_type] = analyzer
+            logger.info(f"Loaded and cached model for analyzer type: {analyzer_type}")
         return analyzer
 
     @staticmethod
