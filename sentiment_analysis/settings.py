@@ -34,9 +34,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-2qansb87%o%wjvoy0^e*bt(bdpkb8!t!2$0@38owd78u9yr7@l')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['sentiment-analysis-backend.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'sentiment-analysis-backend.herokuapp.com',
+    '66faee0a50fb4d0090e871b0--sentiment-analysis-application.netlify.app',
+    'sentiment-analysis-application.netlify.app',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -155,3 +161,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_ALL_ORIGINS = False
+
+django_heroku.settings(locals())
