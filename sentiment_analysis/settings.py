@@ -154,8 +154,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://66faee0a50fb4d0090e871b0--sentiment-analysis-application.netlify.app',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True 
-
 CORS_ALLOW_CREDENTIALS = True
+
 
 django_heroku.settings(locals())
