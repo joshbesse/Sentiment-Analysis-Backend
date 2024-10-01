@@ -21,5 +21,4 @@ from analyze import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('analyze/', include('analyze.urls')),
-    path('', views.analyze_text, name='home'),
 ]
