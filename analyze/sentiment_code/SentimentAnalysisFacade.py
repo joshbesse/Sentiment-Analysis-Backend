@@ -7,9 +7,12 @@ import os
 logger = logging.getLogger(__name__)
 
 class SentimentAnalysisFacade:
-    def __init__(self):
+    def __init__(self, default_analyzer_type='basic'):
         self.sentiment_analyzer = None
         self.loaded_analyzer_type = None
+        self.default_analyzer_type = default_analyzer_type
+        # Preload the default analyzer
+        self.select_analyzer(self.default_analyzer_type)
 
     def log_memory_usage(self):
         process = psutil.Process(os.getpid())
