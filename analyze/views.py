@@ -8,6 +8,8 @@ from celery.result import AsyncResult
 import os 
 import redis
 import ssl
+from django.http import JsonResponse
+
 
 
 logger = logging.getLogger(__name__)
@@ -52,20 +54,20 @@ def get_analysis_history(request):
 @api_view(["GET"])
 def get_task_status(request, task_id):
     try:
-        task_result = AsyncResult(task_id)
-        if task_result.state == 'PENDING':
-            return Response({"status": "PENDING"}, status=200)
-        elif task_result.state == 'SUCCESS':
-            result = task_result.result
-            return Response({
-                "status": "SUCCESS",
-                "sentiment": result.get("sentiment"),
-                "score": result.get("score")
-            }, status=200)
-        elif task_result.state == 'FAILURE':
-            return Response({"status": "FAILURE", "error": str(task_result.result)}, status=500)
+        result = AsyncResult(task_id)
+        if result.state == 'SUCCESS':
+            response_data = {
+                'status': result.state,
+                'sentiment': result.result.get('sentiment', None),
+                'score': result.result.get('score', None)
+            }
+        elif result.state == 'FAILURE':
+            response_data = {
+                'status': result.state,
+                'error': str(result.info)
+            }
         else:
-            return Response({"status": task_result.state}, status=200)
+            response_data = {'status': result.state}
+        return JsonResponse(response_data)
     except Exception as e:
-        logger.error(f"Error in get_task_status view: {e}")
-        return Response({"error": "Internal Server Error"}, status=500)
+        return JsonResponse({'status': 'FAILURE', 'error': str(e)}, status=500)
