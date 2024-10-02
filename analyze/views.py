@@ -1,9 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Analyze
-from .sentiment_code.SentimentAnalysisFacade import SentimentAnalysisFacade
 from .serializers import AnalysisSerializer
 import logging
+from .tasks import analyze_text_task
+
 
 logger = logging.getLogger(__name__)
 
@@ -19,32 +20,13 @@ def analyze_text(request):
 
         logger.info(f"Received analysis request with analyzer_type: {analyzer_type}")
 
-        # Lazy-load the analyzer here
-        facade = SentimentAnalysisFacade()
-        facade.select_analyzer(analyzer_type)
+        # Send the task to Celery for asynchronous processing
+        task = analyze_text_task.delay(analyzer_type, text)
 
-        if facade.sentiment_analyzer is None:
-            return Response({"error": f"Analyzer '{analyzer_type}' not found or failed to load."}, status=400)
+        logger.info(f"Task {task.id} dispatched to worker.")
 
-        result = facade.analyze_text(text)
-
-        if result is None:
-            logger.error("Analyzer failed to process the text.")
-            return Response({"error": "Analyzer failed to process the text."}, status=500)
-
-        analysis_result = Analyze.objects.create(
-            analyzer=analyzer_type,
-            text=text,
-            sentiment=result.get_sentiment(),
-            score=result.get_score()
-        )
-
-        logger.info(f"Analysis result saved: {analysis_result}")
-
-        return Response({
-            'sentiment': result.get_sentiment(),
-            'score': result.get_score()
-        }, status=200)
+        # Return a response indicating the task has been accepted
+        return Response({"message": "Analysis started", "task_id": task.id}, status=202)
 
     except Exception as e:
         logger.error(f"Error in analyze_text view: {e}")

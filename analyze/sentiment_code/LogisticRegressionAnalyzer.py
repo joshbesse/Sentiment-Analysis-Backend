@@ -37,6 +37,7 @@ class LogisticRegressionAnalyzer:
             self.vectorizer = joblib.load(os.path.join(self.model_dir, 'log_reg_tfidf_vectorizer.pkl'), mmap_mode='r')
             self.model = joblib.load(os.path.join(self.model_dir, 'log_reg_model.pkl'), mmap_mode='r')
             logger.info("Logistic Regression models loaded successfully.")
+
         except Exception as e:
             logger.error(f"Error loading Logistic Regression models: {e}")
             self.vectorizer = None
