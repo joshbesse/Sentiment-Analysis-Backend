@@ -5,9 +5,14 @@ from .serializers import AnalysisSerializer
 import logging
 from .tasks import analyze_text_task
 from celery.result import AsyncResult
+import os 
+import redis
 
 
 logger = logging.getLogger(__name__)
+
+redis_url = os.environ.get('REDIS_URL')
+redis_client = redis.Redis.from_url(redis_url)
 
 @api_view(["POST"])
 def analyze_text(request):
