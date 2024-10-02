@@ -1,5 +1,5 @@
 from .LogisticRegressionAnalyzer import LogisticRegressionAnalyzer
-from sklearn.externals import joblib
+import joblib
 import os 
 
 class LogisticRegressionAnalyzerMaker:
