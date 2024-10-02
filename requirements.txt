@@ -67,5 +67,6 @@ wcwidth==0.2.13
 whitenoise
 xxhash==3.5.0
 yarl==1.9.11
+kombu
 
 -f https://download.pytorch.org/whl/torch_stable.html
