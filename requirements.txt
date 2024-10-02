@@ -41,7 +41,7 @@ pyarrow==17.0.0
 python-dateutil==2.9.0.post0
 python-dotenv
 pytz==2024.1
-psutil
+psutil==6.0.0
 PyYAML==6.0.2
 regex==2024.7.24
 requests==2.32.3
