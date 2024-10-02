@@ -30,13 +30,9 @@ def analyze_text(request):
 
         logger.info(f"Received analysis request with analyzer_type: {analyzer_type}")
 
-        # Send the task to Celery for asynchronous processing
+        # Start the Celery task and return its task ID
         task = analyze_text_task.delay(analyzer_type, text)
-
-        logger.info(f"Task {task.id} dispatched to worker.")
-
-        # Return a response indicating the task has been accepted
-        return Response({"message": "Analysis started", "task_id": task.id}, status=202)
+        return Response({"task_id": task.id}, status=202)
 
     except Exception as e:
         logger.error(f"Error in analyze_text view: {e}")
@@ -55,9 +51,21 @@ def get_analysis_history(request):
     
 @api_view(["GET"])
 def get_task_status(request, task_id):
-    task_result = AsyncResult(task_id)
-    return Response({
-        "task_id": task_id,
-        "status": task_result.status,
-        "result": task_result.result
-    })
+    try:
+        task_result = AsyncResult(task_id)
+        if task_result.state == 'PENDING':
+            return Response({"status": "PENDING"}, status=200)
+        elif task_result.state == 'SUCCESS':
+            result = task_result.result
+            return Response({
+                "status": "SUCCESS",
+                "sentiment": result.get("sentiment"),
+                "score": result.get("score")
+            }, status=200)
+        elif task_result.state == 'FAILURE':
+            return Response({"status": "FAILURE", "error": str(task_result.result)}, status=500)
+        else:
+            return Response({"status": task_result.state}, status=200)
+    except Exception as e:
+        logger.error(f"Error in get_task_status view: {e}")
+        return Response({"error": "Internal Server Error"}, status=500)
