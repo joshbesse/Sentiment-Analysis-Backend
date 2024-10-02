@@ -42,7 +42,7 @@ class RandomForestAnalyzer:
             self.vectorizer = None 
             self.model = None 
 
-    def analyze_text(self, text):
+    def analyze_sentiment(self, text):
         text_vectorization = self.vectorizer.transform([text])
         prediction = self.model.predict(text_vectorization)[0]
 
