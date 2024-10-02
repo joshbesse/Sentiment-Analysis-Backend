@@ -1,6 +1,8 @@
 import logging
 from .model_registry import ModelRegistry
 from .SentimentResult import SentimentResult
+import psutil
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -8,6 +10,11 @@ class SentimentAnalysisFacade:
     def __init__(self):
         self.sentiment_analyzer = None
         self.loaded_analyzer_type = None
+
+    def log_memory_usage(self):
+        process = psutil.Process(os.getpid())
+        mem_info = process.memory_info()
+        logger.info(f"Current memory usage: {mem_info.rss / (1024 * 1024):.2f} MB")
 
     def select_analyzer(self, analyzer_type):
         # Avoid re-loading if the same analyzer is already loaded
@@ -21,6 +28,7 @@ class SentimentAnalysisFacade:
             self.sentiment_analyzer = analyzer
             self.loaded_analyzer_type = analyzer_type
             logger.info(f"{analyzer_type} analyzer selected and loaded.")
+            self.log_memory_usage()  # Log memory usage after loading the model
         else:
             logger.error(f"Failed to select analyzer: {analyzer_type}")
             self.sentiment_analyzer = None
