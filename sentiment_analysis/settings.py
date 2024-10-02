@@ -157,7 +157,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'https://sentiment-analysis-application.netlify.app',
-    'https://sentiment-analysis-application.netlify.app/home',
     'https://66faee0a50fb4d0090e871b0--sentiment-analysis-application.netlify.app',
 ]
 

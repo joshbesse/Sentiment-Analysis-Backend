@@ -1,13 +1,11 @@
 from rest_framework.decorators import api_view
-from rest_framework.response import Response 
+from rest_framework.response import Response
 from .models import Analyze
 from .sentiment_code.SentimentAnalysisFacade import SentimentAnalysisFacade
 from .serializers import AnalysisSerializer
 import logging
 
 logger = logging.getLogger(__name__)
-
-facade = SentimentAnalysisFacade()
 
 @api_view(["POST"])
 def analyze_text(request):
@@ -21,7 +19,10 @@ def analyze_text(request):
 
         logger.info(f"Received analysis request with analyzer_type: {analyzer_type}")
 
+        # Lazy-load the analyzer here
+        facade = SentimentAnalysisFacade()
         facade.select_analyzer(analyzer_type)
+
         if facade.sentiment_analyzer is None:
             return Response({"error": f"Analyzer '{analyzer_type}' not found or failed to load."}, status=400)
 
