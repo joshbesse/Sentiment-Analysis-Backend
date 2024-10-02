@@ -54,6 +54,7 @@ def get_analysis_history(request):
 @api_view(["GET"])
 def get_task_status(request, task_id):
     try:
+        logger.info(f"Received request for task status with task_id: {task_id}")
         result = AsyncResult(task_id)
         if result.state == 'SUCCESS':
             response_data = {
