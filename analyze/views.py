@@ -4,6 +4,7 @@ from .models import Analyze
 from .serializers import AnalysisSerializer
 import logging
 from .tasks import analyze_text_task
+from celery.result import AsyncResult
 
 
 logger = logging.getLogger(__name__)
@@ -42,3 +43,12 @@ def get_analysis_history(request):
     except Exception as e:
         logger.error(f"Error in get_analysis_history view: {e}")
         return Response({"error": "Internal Server Error"}, status=500)
+    
+@api_view(["GET"])
+def get_task_status(request, task_id):
+    task_result = AsyncResult(task_id)
+    return Response({
+        "task_id": task_id,
+        "status": task_result.status,
+        "result": task_result.result
+    })
