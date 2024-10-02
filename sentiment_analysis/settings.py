@@ -166,15 +166,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 CELERY_BROKER_URL = os.environ.get('REDIS_URL')
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
 
-if CELERY_BROKER_URL.startswith('rediss://'):
-    from kombu import Connection
-
-    # Set SSL parameters for the connection
-    broker_use_ssl = {'ssl_cert_reqs': None}
-else:
-    broker_use_ssl = None
-
-CELERY_BROKER_USE_SSL = broker_use_ssl
-CELERY_REDIS_BACKEND_USE_SSL = broker_use_ssl
+# Include SSL configuration if using a 'rediss://' URL
+CELERY_BROKER_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE  # Adjust as needed
+}
+CELERY_REDIS_BACKEND_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE  # Adjust as needed
+}
 
 django_heroku.settings(locals())

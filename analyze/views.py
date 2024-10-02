@@ -7,12 +7,16 @@ from .tasks import analyze_text_task
 from celery.result import AsyncResult
 import os 
 import redis
+import ssl
 
 
 logger = logging.getLogger(__name__)
 
 redis_url = os.environ.get('REDIS_URL')
-redis_client = redis.from_url(redis_url, ssl_cert_reqs=None)
+redis_client = redis.from_url(
+    redis_url, 
+    ssl_cert_reqs=ssl.CERT_NONE  # Adjust as needed: CERT_NONE, CERT_OPTIONAL, CERT_REQUIRED
+)
 
 @api_view(["POST"])
 def analyze_text(request):
