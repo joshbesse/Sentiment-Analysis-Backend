@@ -23,7 +23,15 @@ def analyze_text_task(analyzer_type, text):
                 score=result.get_score()
             )
             logger.info(f"Analysis result saved for task: {analysis_result}")
+            
+            # Return the result as a dictionary
+            return {
+                'sentiment': result.get_sentiment(),
+                'score': result.get_score()
+            }
         else:
             logger.error("Analyzer failed to process the text.")
+            return {'error': 'Analyzer failed to process the text.'}
     except Exception as e:
         logger.error(f"Error in analyze_text_task: {e}")
+        return {'error': str(e)}
