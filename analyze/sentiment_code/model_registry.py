@@ -56,8 +56,8 @@ class ModelRegistry:
     def _download_models_if_needed(cls, analyzer_type):
         # Determine S3 keys and local paths based on analyzer type
         if analyzer_type == "logistic_regression":
-            vectorizer_s3_key = "path/to/log_reg_tfidf_vectorizer.pkl"
-            model_s3_key = "path/to/log_reg_model.pkl"
+            vectorizer_s3_key = "log_reg_tfidf_vectorizer.pkl"
+            model_s3_key = "log_reg_model.pkl"
             vectorizer_local_path = os.path.join(cls.LOCAL_MODEL_DIR, "log_reg_tfidf_vectorizer.pkl")
             model_local_path = os.path.join(cls.LOCAL_MODEL_DIR, "log_reg_model.pkl")
 
