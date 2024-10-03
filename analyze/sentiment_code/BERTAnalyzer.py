@@ -73,7 +73,7 @@ class BERTAnalyzer:
             probabilities = torch.nn.functional.softmax(logits, dim=1)
             score = float(probabilities[0][prediction].item())
 
-            return SentimentResult(prediction_label, score)
+            return SentimentResult(prediction_label, prediction)
         except Exception as e:
             logger.error(f"Error during BERT analysis: {e}")
             return SentimentResult("error", 0)
