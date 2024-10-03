@@ -64,16 +64,19 @@ class BERTAnalyzer:
 
             if prediction == 0:
                 prediction_label = "negative"
+                score = -1 
             elif prediction == 2:
                 prediction_label = "positive"
+                score = 1 
             else:
                 prediction_label = "neutral"
+                score = 0
 
             # Assuming 'score' is the probability of the predicted class
             probabilities = torch.nn.functional.softmax(logits, dim=1)
             score = float(probabilities[0][prediction].item())
 
-            return SentimentResult(prediction_label, prediction)
+            return SentimentResult(prediction_label, score)
         except Exception as e:
             logger.error(f"Error during BERT analysis: {e}")
             return SentimentResult("error", 0)
