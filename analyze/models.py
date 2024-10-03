@@ -5,7 +5,7 @@ class Analyze(models.Model):
     analyzer = models.CharField(max_length=50)
     text = models.TextField()
     sentiment = models.CharField(max_length=10)
-    score = models.FloatField()
+    score = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
