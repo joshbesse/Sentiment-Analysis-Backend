@@ -41,17 +41,22 @@ class BERTAnalyzer:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
             self.model = AutoModelForSequenceClassification.from_pretrained(
                 self.model_dir,
-                torch_dtype=torch.float16,  # Use lower precision
+                torch_dtype=torch.float32,  # Use single precision
                 device_map='cpu'            # Ensure model is loaded on CPU
             )
-            logger.info("BERT models loaded successfully on CPU.")
+            logger.info("BERT models loaded successfully on CPU with float32 precision.")
         except Exception as e:
             logger.error(f"Error loading BERT models: {e}")
             self.tokenizer = None
             self.model = None
-    
+
     def analyze_sentiment(self, text):
-            inputs = self.tokenizer(text, return_tensors='pt', truncation=True, padding=True).to(self.model.device)
+        if self.tokenizer is None or self.model is None:
+            logger.error("BERT model or tokenizer not loaded.")
+            return SentimentResult("error", 0)
+
+        try:
+            inputs = self.tokenizer(text, return_tensors='pt', truncation=True, padding=True)
             with torch.no_grad():
                 outputs = self.model(**inputs)
             logits = outputs.logits
@@ -64,5 +69,11 @@ class BERTAnalyzer:
             else:
                 prediction_label = "neutral"
 
-            return SentimentResult(prediction_label, prediction)
+            # Assuming 'score' is the probability of the predicted class
+            probabilities = torch.nn.functional.softmax(logits, dim=1)
+            score = float(probabilities[0][prediction].item())
 
+            return SentimentResult(prediction_label, score)
+        except Exception as e:
+            logger.error(f"Error during BERT analysis: {e}")
+            return SentimentResult("error", 0)
